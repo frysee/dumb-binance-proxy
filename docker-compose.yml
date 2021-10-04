@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  app:
+    build: ./Dockerfile
+    image: dumbproxy
+    ports:
+      - "8888:8888"
+  # optional: collects metrics of other containers
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
+    restart: unless-stopped
+    ports:
+    - 8180:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    - /etc/machine-id:/etc/machine-id:ro
+    - /var/lib/dbus/machine-id:/var/lib/dbus/machine-id:ro
+    devices:
+    - /dev/kmsg:/dev/kmsg
+  # optional: collects metrics of host
+  node-exporter:
+    container_name: node_exporter
+    image: prom/node-exporter:latest
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+  # optional: collects Binance API metrics (rate limit)
+  binance-ratelimit:
+    container_name: binance_ratelimit
+    image: ghcr.io/frysee/binance_exporter:latest
+    restart: unless-stopped
+    ports:
+      - "9133:9133"
