@@ -2,8 +2,8 @@ version: '3'
 
 services:
   app:
-    build: .
-    image: dumbproxy
+    image: ghcr.io/frysee/dumb_binance_proxy:latest
+    restart: unless-stopped
     ports:
       - "8888:8888"
   # optional: collects metrics of other containers
