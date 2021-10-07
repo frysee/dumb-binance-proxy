@@ -36,3 +36,4 @@ services:
     restart: unless-stopped
     ports:
       - "9133:9133"
+    command: --auto-scrape=true
